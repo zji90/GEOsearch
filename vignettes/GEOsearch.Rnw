@@ -1,0 +1,86 @@
+%\VignetteIndexEntry{GEOsearch: Extendable Search Engine for Gene Expression Omnibus} 
+%\VignetteDepends{} 
+% \VignetteEngine{knitr::knitr}
+%\VignettePackage{SEPA}
+
+\documentclass[10pt,oneside]{article}
+\usepackage[utf8]{inputenc}
+\setlength\parindent{0pt}
+
+\newcommand{\thetitle}{GEOsearch: Extendable Search Engine for Gene Expression Omnibus}
+
+\title{\textsf{\textbf{\thetitle}}}
+\author{Zhicheng Ji\\[1em]Johns Hopkins University,\\ Baltimore, Maryland, USA\\
+\texttt{zji4@jhu.edu} \and
+Hongkai Ji\\[1em]Johns Hopkins University,\\ Baltimore, Maryland, USA\\
+\texttt{hji@jhsph.edu}}
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introductions}
+As the largest and most used public repositories for genomics data, the NCBI Gene Expression Omnibus (GEO [1], http://www.ncbi.nlm.nih.gov/geo/) is an indispensable tool for researchers to search and explore various kind of genomics data. However, the default search function of GEO is not comprehensive and powerful enough. For example, if the search term contains gene name such as Oct4, GEO will ignore samples or experiments related to its alias Pou5f1, which makes the search results incomprehensive. In addition, GEO does not provide second-round search functions for users to further narrow down the experiments or samples of interest after an initial search. For example, users may want to focus on experiments related to specific biological contexts such as different cell types, tissues and diseases. It is tedious and inefficient for users to perform such second-round search with default search functions provided by GEO.
+GEOmetadb [2] was previously proposed as an alternative search engine for GEO to faciliate the query of GEO metadata. However, GEOmetadb does not provide the function of searching gene alias or performing second-round search. In addition, GEOmetadb depends on a static GEO metadata database which requires frequent updating and prevents it from obtaining the most up-to-dated results. To address these problems, we developed GEOsearch which is an expandable search engine available online. GEOsearch can provide more comprehensive search results by automatically searching all alias of the gene names contained in the search term. The search results are then integrated and displayed in a compact and editable table. After an initial search, GEOsearch summarize the biological contexts of the search results and allows users to perform second-round search to further narrow down the search results. Unlike GEOmetadb, GEOsearch takes advantage of the programmatic search portal provided by GEO and does not depend on any external database. As a result GEOsearch does not require routine updating and maintaining.
+GEOsearch can be primarily accessed by directly visiting the online user interface https://zhiji.shinyapps.io/GEOsearch. In this way GEOsearch can be used as an alternative of NCBI GEO's default search engine. GEOsearch can also be used programmatically by running R commands.
+
+\section{Find Term Alias}
+
+The function termalias first picks gene names from the searh term. It then searches alias for all the gene names contained in the search term. It next queries GEO and retain alias that appear frequently enough in GEO database. Finally it returns a combinatory results of retained alias.
+
+<<echo=FALSE>>=
+library(GEOsearch)
+library(org.Hs.eg.db)
+library(org.Mm.eg.db)
+@
+
+<<>>=
+Oct4alias <- termalias("Oct4 RNA-seq")
+@
+
+In this example, termalias picks the gene name (Oct4) and finds all its alias (e.g. Pou5f1). It returns the combinatory results of all alias.
+
+\section{Perform Searching}
+
+The function GEOsearchterm searches the input terms one by one in NCBI GEO database and returns an integrated table of search results. The returned results should contain exactly the same information as the results returned by directly searching in http://www.ncbi.nlm.nih.gov/geo/. The input of GEOsearchterm is typically the direct output of the function termalias.
+
+<<>>=
+Oct4searchres <- GEOsearchterm(Oct4alias)
+head(Oct4searchres)
+@
+
+The example above lists not only search results for the term "Oct4 RNA-seq" but also results for the term "Pou5f1 RNA-seq". The combined results are more comprehensive than the results of searching either one of the term. In principal the search results returned by GEOsearch should always be as or more comprehensive than the search results returned by GEO default search functions.
+
+\section{Frequencies of Common Biology Keywords}
+
+The function keywordfreq calculates the frequencies of each common biology keyword appearing in the given search table. The list of common biology keywords is compiled from http://www.atcc.org/. The list contains three categories: cell types, diseases and tissues. Users can specify which category to be used. The function also returns log fold change and FDR of fisher test to check whether each keyword has significantly more appearance compared to base frequency. The base frequency is defined as the number of appearance of the key word in all samples (roughly 40000 samples) included in GEO database.
+
+<<>>=
+Oct4keywordfreq <- keywordfreq(Oct4searchres)
+head(Oct4keywordfreq)
+@
+
+In this example embryonic stem cell is among the most frequently appeared biology keyword, which is consistent with known biology [3]. This function allows users to quickly explore the cell types, tissues or organs strongly related to the search term. Users can easily perform second-round search to filter out unrelated records using the online user interface.
+
+\section{Details of GSM Samples Given GSE Accession ID.}
+
+The function sampledetail returns an integrated table containing details of all GSM samples for a list of GSE accession ID. This function is especially useful if users want to compare samples from different experiments (GSE).
+
+<<>>=
+sampledetail(c("GSE69322","GSE64008"))
+@
+
+\section{SEPA GUI}
+In addition to the basic command lines tools discussed above, SEPA provides a powerful which provides more comprehensive and convenient functions for gene expression pattern analysis. For example, users can easily transform raw gene expression data and convert gene identifiers before the analysis; save the result tables and plots of publication quality; identify genes with different expression patterns on true time and pseudo-time axis. Users are encouraged to use SEPA GUI.
+
+
+\section{Reference}
+[1]Ron E., Michael D., and Alex E. L. (2002) Gene Expression Omnibus: NCBI gene expression and hybridization array data repository. Nucleic Acids Res., 30(1), 207-210.
+
+[2]Yuelin Z., Sean D., Robert S., Paul S. M. and Yidong C. (2008) GEOmetadb: powerful alternative search engine for the Gene Expression Omnibus. Bioinformatics., 24(23), 2798-2800.
+
+[3]Zaehres H., Lensch M.W., Daheron L., Stewart S.A., Itskovitz-Eldor J. and Daley GQ. (2005) High-efficiency RNA interference in human embryonic stem cells. Stem Cells., 23(3), 299-305.
+
+\end{document}
+
