@@ -1,4 +1,4 @@
-#' keywordfreq
+#' KeyWordFreq
 #' 
 #' Frequencies of common biology keywords appearing in search results
 #'
@@ -10,9 +10,9 @@
 #' @export 
 #' @author Zhicheng Ji, Hongkai Ji <zji4@@zji4.edu>
 #' @examples
-#' keywordfreq(GEOsearchterm("Oct4 RNA-seq"))
+#' KeyWordFreq(GEOSearchTerm("Oct4 RNA-seq"))
 
-keywordfreq <- function(searchtable, category = c("celltype","disease","tissue")) {      
+KeyWordFreq <- function(searchtable, category = c("celltype","disease","tissue")) {      
       data(term)
       term <- term[term[,2] %in% category,]      
       termselected <- unique(term[,1])
@@ -21,12 +21,12 @@ keywordfreq <- function(searchtable, category = c("celltype","disease","tissue")
             i <- paste0("( |^)",i,"( |$)")
             length(grep(i,paste(searchtable$Title,searchtable$Description)))
       })
-      tmp <- sort(res[res > 0],decreasing = T)            
+      tmp <- sort(res[res > 0],decreasing = TRUE)            
       basefreq <- term[match(names(tmp),term[,1]),3]
       logfoldchange <- log(tmp/nrow(searchtable)/(basefreq/40000))
       pval <- p.adjust(sapply(1:length(tmp),function(i) {
             fisher.test(matrix(c(tmp[i],nrow(searchtable)-tmp[i],basefreq[i],40000-basefreq[i]),2),alternative = "greater")$p.value
       }),method="fdr")
-      res <- data.frame(term=names(tmp),frequency=tmp,logfoldchange=logfoldchange,FDR=pval,stringsAsFactors = F)
+      res <- data.frame(term=names(tmp),frequency=tmp,logfoldchange=logfoldchange,FDR=pval,stringsAsFactors = FALSE)
       res[order(res$FDR),]
 }

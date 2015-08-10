@@ -1,4 +1,4 @@
-#' termalias
+#' TermAlias
 #' 
 #' Search Alias of a Term
 #'
@@ -12,16 +12,16 @@
 #' @import org.Hs.eg.db org.Mm.eg.db
 #' @author Zhicheng Ji, Hongkai Ji <zji4@@zji4.edu>
 #' @examples
-#' termalias("Oct4 RNA-seq")
+#' TermAlias("Oct4 RNA-seq")
 
 
-termalias <- function(searchterm, allspecies = c("Human","Mouse"), mincount = 5) {
+TermAlias <- function(searchterm, allspecies = c("Human","Mouse"), mincount = 5) {
       data(database)
       readURL <- function(URL, n = -1L) {
             while(!exists("URLdata")) {
                   tryCatch(URLdata <- readLines(URL,n), error = function(e) {}, warning = function(w) {})
             }      
-            URLdata
+	    URLdata
       }      
       allterm <- strsplit(searchterm," ")[[1]]
       tmp <- sapply(allterm, function(term) {            

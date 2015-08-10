@@ -36,7 +36,8 @@ library(org.Mm.eg.db)
 @
 
 <<>>=
-Oct4alias <- termalias("Oct4 RNA-seq")
+Oct4alias <- TermAlias("Oct4 RNA-seq")
+Oct4alias
 @
 
 In this example, termalias picks the gene name (Oct4) and finds all its alias (e.g. Pou5f1). It returns the combinatory results of all alias.
@@ -46,7 +47,7 @@ In this example, termalias picks the gene name (Oct4) and finds all its alias (e
 The function GEOsearchterm searches the input terms one by one in NCBI GEO database and returns an integrated table of search results. The returned results should contain exactly the same information as the results returned by directly searching in http://www.ncbi.nlm.nih.gov/geo/. The input of GEOsearchterm is typically the direct output of the function termalias.
 
 <<>>=
-Oct4searchres <- GEOsearchterm(Oct4alias)
+Oct4searchres <- GEOSearchTerm(Oct4alias)
 head(Oct4searchres)
 @
 
@@ -57,7 +58,7 @@ The example above lists not only search results for the term "Oct4 RNA-seq" but 
 The function keywordfreq calculates the frequencies of each common biology keyword appearing in the given search table. The list of common biology keywords is compiled from http://www.atcc.org/. The list contains three categories: cell types, diseases and tissues. Users can specify which category to be used. The function also returns log fold change and FDR of fisher test to check whether each keyword has significantly more appearance compared to base frequency. The base frequency is defined as the number of appearance of the key word in all samples (roughly 40000 samples) included in GEO database.
 
 <<>>=
-Oct4keywordfreq <- keywordfreq(Oct4searchres)
+Oct4keywordfreq <- KeyWordFreq(Oct4searchres)
 head(Oct4keywordfreq)
 @
 
@@ -68,7 +69,7 @@ In this example embryonic stem cell is among the most frequently appeared biolog
 The function sampledetail returns an integrated table containing details of all GSM samples for a list of GSE accession ID. This function is especially useful if users want to compare samples from different experiments (GSE).
 
 <<>>=
-sampledetail(c("GSE69322","GSE64008"))
+SampleDetail(c("GSE69322","GSE64008"))
 @
 
 \section{SEPA GUI}

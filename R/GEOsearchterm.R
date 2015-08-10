@@ -1,4 +1,4 @@
-#' GEOsearchterm
+#' GEOSearchTerm
 #' 
 #' Perform searching in NCBI GEO database.
 #'
@@ -9,9 +9,9 @@
 #' @export 
 #' @author Zhicheng Ji, Hongkai Ji <zji4@@zji4.edu>
 #' @examples
-#' GEOsearchterm("Oct4 RNA-seq")
+#' GEOSearchTerm("Oct4 RNA-seq")
 
-GEOsearchterm <- function(termlist) {
+GEOSearchTerm <- function(termlist) {
       readURL <- function(URL) {
             while(!exists("URLdata")) {
                   tryCatch(URLdata <- readLines(URL), error = function(e) {}, warning = function(w) {})
@@ -57,7 +57,7 @@ GEOsearchterm <- function(termlist) {
                   res <- rbind(res,c(series,organism,title,type,platform,sampnum,SRX,description))
             }
             colnames(res) <- c("Series","Organism","Title","Type","Platform","Sample.Number","SRX","Description")            
-            res <- data.frame(res,stringsAsFactors = F)    
+            res <- data.frame(res,stringsAsFactors = FALSE)    
             res$Sample.Number <- as.numeric(res$Sample.Number)     
             res$Term <- uidtable
             res      

@@ -1,4 +1,4 @@
-#' sampledetail
+#' SampleDetail
 #' 
 #' Details of GSM samples given GSE accession ID.
 #'
@@ -9,9 +9,9 @@
 #' @export 
 #' @author Zhicheng Ji, Hongkai Ji <zji4@@zji4.edu>
 #' @examples
-#' sampledetail(c("GSE69322","GSE64008"))
+#' SampleDetail(c("GSE69322","GSE64008"))
 
-sampledetail <- function(GSEid) {       
+SampleDetail <- function(GSEid) {       
       readURL <- function(URL) {
             while(!exists("URLdata")) {
                   tryCatch(URLdata <- readLines(URL), error = function(e) {}, warning = function(w) {})
