@@ -5,6 +5,7 @@
 ##           Author:Zhicheng Ji, Hongkai Ji         ##
 ##       Maintainer:Zhicheng Ji (zji4@jhu.edu)      ##
 ######################################################
+library(GEOsearch)
 library(shiny)
 library(DT)
 library(org.Hs.eg.db)
@@ -23,11 +24,11 @@ shinyServer(function(input, output,session) {
                                     tmpterm <- input$searchterm
                               } else {
                                     withProgress(message = 'Seaching Gene Alias...',{
-                                          tmpterm <- termalias(input$searchterm,allspecies = input$searchexpandselectspecies,database=database)                                          
+                                          tmpterm <- TermAlias(input$searchterm,allspecies = input$searchexpandselectspecies)                                          
                                     })
                               }
                               withProgress(message = 'Compiling GEO Search Results...',{
-                                    Maindata$rawsearchres <- tmp <- GEOsearchterm(tmpterm)
+                                    Maindata$rawsearchres <- tmp <- GEOSearchTerm(tmpterm)
                               })
                               tmp$Series <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Series,'" target=_blank>',tmp$Series,'</a>')
                               SRXname <- sapply(tmp$SRX, function(i) {
@@ -63,7 +64,7 @@ shinyServer(function(input, output,session) {
       output$keywordshowkeyword <- DT::renderDataTable(
             if (!is.null(Maindata$searchres)) {
                   withProgress(message = 'Calculating key word frequencies...',{
-                        Maindata$keywordres <- keywordfreq(Maindata$searchres,category = input$keywordselectterm,term)                  
+                        Maindata$keywordres <- KeyWordFreq(Maindata$searchres,category = input$keywordselectterm)                  
                   })
                   DT::datatable(Maindata$keywordres,filter='top',rownames = F)
             }
@@ -129,7 +130,7 @@ shinyServer(function(input, output,session) {
                         }
                         if (!is.null(GSEnamelist)) {
                               withProgress(message = 'Retrieving sample information...',{
-                              Maindata$sampleres <- sampledetail(GSEnamelist)      
+                              Maindata$sampleres <- SampleDetail(GSEnamelist)      
                               })
                         }                        
                   })
