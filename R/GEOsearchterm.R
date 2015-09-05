@@ -36,7 +36,7 @@ GEOSearchTerm <- function(termlist,type="GSE") {
       })
       if (length(uniqueuid) > 0) {
             rawcontent <- NULL
-            for (i in 1:floor(length(uniqueuid)/500)) {
+            for (i in 1:max(1,floor(length(uniqueuid)/500))) {
                   if (i == floor(length(uniqueuid)/500)) {
                         tmpuniqueuid <- uniqueuid[(1+500 * (i-1)):length(uniqueuid)]
                   } else {

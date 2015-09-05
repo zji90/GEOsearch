@@ -27,31 +27,51 @@ shinyServer(function(input, output,session) {
                                           tmpterm <- TermAlias(input$searchterm,allspecies = input$searchexpandselectspecies)                                          
                                     })
                               }
-                              withProgress(message = 'Compiling GEO Search Results...',{
+                              withProgress(message = 'Compiling GEO Search Results for GSE...',{
                                     Maindata$rawsearchres <- tmp <- GEOSearchTerm(tmpterm,type="GSE")
                               })
                               tmp$Series <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Series,'" target=_blank>',tmp$Series,'</a>')
                               tmp$Term <- factor(tmp$Term)      
                               Maindata$searchres <- tmp                              
+                              
+                              if (input$searchGSMTF) {
+                                    withProgress(message = 'Compiling GEO Search Results for GSM...',{
+                                          Maindata$rawsearchresGSM <- tmp <- GEOSearchTerm(tmpterm,type="GSM")
+                                    })
+                                    tmp$Sample <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Sample,'" target=_blank>',tmp$Sample,'</a>')                                    
+                                    tmp$Series <- sapply(tmp$Series, function(i) {
+                                          tmpSeries <- strsplit(i,",")[[1]]      
+                                          paste(paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmpSeries,'" target=_blank>',tmpSeries,'</a>'),collapse = ",")
+                                    })      
+                                    tmp$Term <- factor(tmp$Term)      
+                                    Maindata$searchresGSM <- tmp                              
+                              }                              
                         }    
                   })      
             }            
       })
       
-      
-            tmp$Sample <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Sample,'" target=_blank>',tmp$Sample,'</a>')                                    
-            tmp$Series <- sapply(tmp$Series, function(i) {
-                  tmpSeries <- strsplit(i,",")[[1]]      
-                  paste(paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmpSeries,'" target=_blank>',tmpSeries,'</a>'),collapse = ",")
-            })
-           
-      
-      
-      
       output$searchshowtable <- DT::renderDataTable(
             if (!is.null(Maindata$searchres))
                   DT::datatable(Maindata$searchres,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=4:8)),colVis = list(showAll = "Show all",restore = "Restore")))
-      ) 
+      )
+      
+      output$searchshowtableGSM <- DT::renderDataTable(
+            if (!is.null(Maindata$searchresGSM))
+                  DT::datatable(Maindata$searchresGSM,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=6:7)),colVis = list(showAll = "Show all",restore = "Restore")))
+      )
+      
+      output$searchshowtableui <- renderUI({
+            if (input$searchGSMTF) {
+                  tabsetPanel(
+                        tabPanel("GSE",DT::dataTableOutput("searchshowtable")),
+                        tabPanel("GSE",DT::dataTableOutput("searchshowtableGSM"))
+                  )     
+            } else {
+                  DT::dataTableOutput("searchshowtable")            
+            }            
+      })
+      
       
       output$searchdownloadbutton <- downloadHandler(
             filename = function() { "Search Results.txt" },
@@ -106,7 +126,7 @@ shinyServer(function(input, output,session) {
                   }                  
             }
       )
-            
+      
       ### Sample ###
       
       output$sampleselectui <- renderUI({            
@@ -118,7 +138,7 @@ shinyServer(function(input, output,session) {
                   tagList(
                         helpText("Multiple GSE name should be separated by ;"),
                         textInput("GSMsamplenew","Enter GSE name")
-                        )
+                  )
             }            
       })
       
@@ -135,7 +155,7 @@ shinyServer(function(input, output,session) {
                         }
                         if (!is.null(GSEnamelist)) {
                               withProgress(message = 'Retrieving sample information...',{
-                              Maindata$sampleres <- SampleDetail(GSEnamelist)      
+                                    Maindata$sampleres <- SampleDetail(GSEnamelist)      
                               })
                         }                        
                   })

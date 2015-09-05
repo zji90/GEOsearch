@@ -64,7 +64,7 @@ shinyUI(
       
       mainPanel(
             conditionalPanel(condition="input.Mainmenu=='search'",
-                             DT::dataTableOutput("searchshowtable")
+                             uiOutput("searchshowtableui")                             
                              ),
             conditionalPanel(condition="input.Mainmenu=='keyword'",                                                                                          
                              tabsetPanel(
