@@ -5,7 +5,7 @@
 #' Search the terms one by one in NCBI GEO database and return an integrated table of search results. The returned results should contain exactly the same information as the results returned by directly searching in http://www.ncbi.nlm.nih.gov/geo/.
 #' 
 #' @param termlist A character vector of terms to be searched in NCBI GEO. Typically the direct output of function "termalias"
-#' @return A data frame containing the search results returned from NCBI GEO. First column: GEO Series Accesion Number; Second column: Organism; Third column: Title; Fourth column: Type of experiment; Fifth column: Experiment Platform Sixth column: Number of Samples; Seventh column: URL for SRX download; Eighth column: Description Ninth column: Corresponding search term.
+#' @return A data frame containing the search results returned from NCBI GEO. First column: GEO Series Accesion Number; Second column: Organism; Third column: Title; Fourth column: Type of experiment; Fifth column: Experiment Platform Sixth column: Number of Samples; Seventh column: Description; Eighth column: Corresponding search term.
 #' @export 
 #' @author Zhicheng Ji, Hongkai Ji <zji4@@zji4.edu>
 #' @examples
@@ -49,14 +49,12 @@ GEOSearchTerm <- function(termlist) {
                   sampnum <- strsplit(platform," ")[[1]]
                   sampnum <- as.numeric(sampnum[length(sampnum)-1])
                   platform <- sub(" [0-9]* Samples","",platform)
-                  platform <- sub("^.*Platforms?: ","",platform)
-                  SRX <- strsplit(tmp[grep("FTP download: ",tmp)]," ")[[1]]
-                  SRX <- SRX[length(SRX)]
+                  platform <- sub("^.*Platforms?: ","",platform)                  
                   series <- sub("Series\t\tAccession: ","",tmp[grep("Series\t",tmp)])
                   series <- sub("\t.*","",series)
-                  res <- rbind(res,c(series,organism,title,type,platform,sampnum,SRX,description))
+                  res <- rbind(res,c(series,organism,title,type,platform,sampnum,description))
             }
-            colnames(res) <- c("Series","Organism","Title","Type","Platform","Sample.Number","SRX","Description")            
+            colnames(res) <- c("Series","Organism","Title","Type","Platform","Sample.Number","Description")            
             res <- data.frame(res,stringsAsFactors = FALSE)    
             res$Sample.Number <- as.numeric(res$Sample.Number)     
             res$Term <- uidtable

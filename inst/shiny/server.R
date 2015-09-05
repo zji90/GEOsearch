@@ -31,11 +31,6 @@ shinyServer(function(input, output,session) {
                                     Maindata$rawsearchres <- tmp <- GEOSearchTerm(tmpterm)
                               })
                               tmp$Series <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Series,'" target=_blank>',tmp$Series,'</a>')
-                              SRXname <- sapply(tmp$SRX, function(i) {
-                                    tmp <- strsplit(i,"/")[[1]]
-                                    tmp[length(tmp)]
-                              })
-                              tmp$SRX <- paste0('<a href="',tmp$SRX,'" target=_blank>',SRXname,'</a>')
                               tmp$Term <- factor(tmp$Term)
                               Maindata$searchres <- tmp
                         }    
@@ -112,7 +107,7 @@ shinyServer(function(input, output,session) {
             } else {
                   tagList(
                         helpText("Multiple GSE name should be separated by ;"),
-                        textInput("GSMsamplenew","Type GSM name")
+                        textInput("GSMsamplenew","Type GSE name")
                         )
             }            
       })
