@@ -64,14 +64,13 @@ shinyServer(function(input, output,session) {
       output$searchshowtableui <- renderUI({
             if (input$searchGSMTF) {
                   tabsetPanel(
-                        tabPanel("GSE",DT::dataTableOutput("searchshowtable")),
-                        tabPanel("GSE",DT::dataTableOutput("searchshowtableGSM"))
+                        tabPanel("GSE Series",DT::dataTableOutput("searchshowtable")),
+                        tabPanel("GSM Samples",DT::dataTableOutput("searchshowtableGSM"))
                   )     
             } else {
                   DT::dataTableOutput("searchshowtable")            
             }            
-      })
-      
+      })      
       
       output$searchdownloadbutton <- downloadHandler(
             filename = function() { "Search Results.txt" },
@@ -84,6 +83,17 @@ shinyServer(function(input, output,session) {
             }
       )
       
+      output$searchdownloadGSMbutton <- downloadHandler(
+            filename = function() { "Search Results.txt" },
+            content = function(file) {                  
+                  if (input$searchdownloadGSMselectedparttf) {
+                        write.table(Maindata$rawsearchresGSM[input$searchshowtableGSM_rows_selected,],file=file,quote=F,row.names=F,sep="\t")                        
+                  } else {
+                        write.table(Maindata$rawsearchresGSM,file=file,quote=F,row.names=F,sep="\t")                        
+                  }                  
+            }
+      )
+            
       ### Keyword ###
       
       output$keywordshowkeyword <- DT::renderDataTable(
@@ -175,6 +185,26 @@ shinyServer(function(input, output,session) {
                   } else {
                         write.table(Maindata$sampleres,file=file,quote=F,row.names=F,sep="\t")                        
                   }                  
+            }
+      )
+      
+      ### Batch Download ###
+      observe({
+            if (input$Batchrunbutton > 0) {
+                  isolate({
+                        if (!is.null(input$Batchinputtext)) {                              
+                              Maindata$batchdownloadres <- BatchDownload(strsplit(input$Batchinputtext,";")[[1]],input$Batchinputpath)
+                        }                        
+                  })                  
+            }
+      })
+      
+      output$showbatchdownloadres <- renderText(Maindata$batchdownloadres)
+      
+      output$Batchdownloadbutton <- downloadHandler(
+            filename = function() { "Download.sh" },
+            content = function(file) {                                    
+                  writeLines(Maindata$batchdownloadres,file)                                                            
             }
       )
       

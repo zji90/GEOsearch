@@ -44,7 +44,7 @@ SampleDetail <- function(GSEid) {
       }
       }
       colnames(allres) <- c("Experiment","Sample","Title","Type","Source","Organism","Characteristic","Description")
-      allres
+      data.frame(allres,stringsAsFactors = FALSE)
 }
 
 
