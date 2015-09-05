@@ -4,13 +4,15 @@
 \alias{GEOSearchTerm}
 \title{GEOSearchTerm}
 \usage{
-GEOSearchTerm(termlist)
+GEOSearchTerm(termlist, type = "GSE")
 }
 \arguments{
 \item{termlist}{A character vector of terms to be searched in NCBI GEO. Typically the direct output of function "termalias"}
+
+\item{type}{Either "GSE" or "GSM". The function will search either GSE and GSM on GEO.}
 }
 \value{
-A data frame containing the search results returned from NCBI GEO. First column: GEO Series Accesion Number; Second column: Organism; Third column: Title; Fourth column: Type of experiment; Fifth column: Experiment Platform Sixth column: Number of Samples; Seventh column: URL for SRX download; Eighth column: Description Ninth column: Corresponding search term.
+A data frame containing the search results returned from NCBI GEO.
 }
 \description{
 Perform searching in NCBI GEO database.

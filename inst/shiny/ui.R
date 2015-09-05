@@ -17,8 +17,9 @@ shinyUI(
                   ),
                   conditionalPanel(condition="input.Mainmenu=='search'",
                                    wellPanel(
-                                         h4("Search GEO"),
+                                         h4("Search GEO"),                                         
                                          radioButtons("searchoption","",list("Traditional Search"="Traditional","Extended Search"="Expand")),
+                                         checkboxInput("searchGSMTF","In addition to GSE series, also search GSM samples (this step may take a long time for extended search)",value=FALSE),
                                          conditionalPanel(condition="input.searchoption=='Expand'",                                         
                                                           selectizeInput("searchexpandselectspecies","Select species in which gene alias will be searched",choices=c("Anopheles","Arabidopsis","Bovine","Worm","Canine","Fly","Zebrafish","E coli strain K12","E coli strain Sakai","Chicken","Human","Mouse","Rhesus","Malaria","Chimp","Rat","Yeast","Pig","Xenopus"),selected=c("Human","Mouse"),multiple=T),
                                                           helpText("Expand search will search all possible gene alias in the database. Search speed is slower for more species chosen.")

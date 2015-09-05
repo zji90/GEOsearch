@@ -28,19 +28,29 @@ shinyServer(function(input, output,session) {
                                     })
                               }
                               withProgress(message = 'Compiling GEO Search Results...',{
-                                    Maindata$rawsearchres <- tmp <- GEOSearchTerm(tmpterm)
+                                    Maindata$rawsearchres <- tmp <- GEOSearchTerm(tmpterm,type="GSE")
                               })
                               tmp$Series <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Series,'" target=_blank>',tmp$Series,'</a>')
-                              tmp$Term <- factor(tmp$Term)
-                              Maindata$searchres <- tmp
+                              tmp$Term <- factor(tmp$Term)      
+                              Maindata$searchres <- tmp                              
                         }    
                   })      
             }            
       })
       
+      
+            tmp$Sample <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Sample,'" target=_blank>',tmp$Sample,'</a>')                                    
+            tmp$Series <- sapply(tmp$Series, function(i) {
+                  tmpSeries <- strsplit(i,",")[[1]]      
+                  paste(paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmpSeries,'" target=_blank>',tmpSeries,'</a>'),collapse = ",")
+            })
+           
+      
+      
+      
       output$searchshowtable <- DT::renderDataTable(
             if (!is.null(Maindata$searchres))
-                  DT::datatable(Maindata$searchres,escape = F,filter='top',rownames = F, extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=4:8)),colVis = list(showAll = "Show all",restore = "Restore")))
+                  DT::datatable(Maindata$searchres,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=4:8)),colVis = list(showAll = "Show all",restore = "Restore")))
       ) 
       
       output$searchdownloadbutton <- downloadHandler(
@@ -61,7 +71,7 @@ shinyServer(function(input, output,session) {
                   withProgress(message = 'Calculating key word frequencies...',{
                         Maindata$keywordres <- KeyWordFreq(Maindata$searchres,category = input$keywordselectterm)                  
                   })
-                  DT::datatable(Maindata$keywordres,filter='top',rownames = F)
+                  DT::datatable(Maindata$keywordres,filter='top')
             }
       )
       
@@ -75,7 +85,7 @@ shinyServer(function(input, output,session) {
                   }                  
                   Maindata$searchreskeyword <- Maindata$searchres[tmp,]
                   Maindata$rawsearchreskeyword <- Maindata$rawsearchres[tmp,]
-                  DT::datatable(Maindata$searchreskeyword,escape = F,filter='top',rownames = F, extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=4:8)),colVis = list(showAll = "Show all",restore = "Restore")))                  
+                  DT::datatable(Maindata$searchreskeyword,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=4:8)),colVis = list(showAll = "Show all",restore = "Restore")))                  
             }
       )      
       
@@ -100,14 +110,14 @@ shinyServer(function(input, output,session) {
       ### Sample ###
       
       output$sampleselectui <- renderUI({            
-            if (input$sampleselectmethod=='select1') {
+            if (input$sampleselectmethod=='select1') {                  
                   selectizeInput("GSMsampleselect1","",Maindata$rawsearchres[input$searchshowtable_rows_selected,1],multiple=T)
             } else if (input$sampleselectmethod=='select2') {
                   selectizeInput("GSMsampleselect2","",Maindata$rawsearchreskeyword[input$keywordshowselectsample_rows_selected,1],multiple=T)
             } else {
                   tagList(
                         helpText("Multiple GSE name should be separated by ;"),
-                        textInput("GSMsamplenew","Type GSE name")
+                        textInput("GSMsamplenew","Enter GSE name")
                         )
             }            
       })
@@ -134,7 +144,7 @@ shinyServer(function(input, output,session) {
       
       output$sampleshowtable <- DT::renderDataTable(
             if (!is.null(Maindata$sampleres))
-                  DT::datatable(Maindata$sampleres,escape = F,filter='top',rownames = F, extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=6:7)),colVis = list(showAll = "Show all",restore = "Restore")))
+                  DT::datatable(Maindata$sampleres,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=6:7)),colVis = list(showAll = "Show all",restore = "Restore")))
       )
       
       output$sampledownloadbutton <- downloadHandler(
