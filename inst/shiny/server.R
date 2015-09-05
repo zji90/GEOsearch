@@ -192,14 +192,19 @@ shinyServer(function(input, output,session) {
       observe({
             if (input$Batchrunbutton > 0) {
                   isolate({
-                        if (!is.null(input$Batchinputtext)) {                              
-                              Maindata$batchdownloadres <- BatchDownload(strsplit(input$Batchinputtext,";")[[1]],input$Batchinputpath)
+                        if (!is.null(input$Batchinputtext)) {                                 
+                              withProgress(message = 'Making shell file...',{
+                                    Maindata$batchdownloadres <- BatchDownload(strsplit(input$Batchinputtext,";")[[1]],input$Batchinputpath)
+                              })
                         }                        
                   })                  
             }
       })
       
-      output$showbatchdownloadres <- renderText(Maindata$batchdownloadres)
+      output$showbatchdownloadres <- renderText({            
+            if (!is.null(Maindata$batchdownloadres))             
+                  Maindata$batchdownloadres
+      })
       
       output$Batchdownloadbutton <- downloadHandler(
             filename = function() { "Download.sh" },

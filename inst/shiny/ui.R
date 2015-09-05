@@ -94,7 +94,8 @@ shinyUI(
                                    p("The shell file must be run on user's own Linux/Unix computer with wget installed."),
                                    p("Note that GSE series with lots of samples will take the function a long time to finish. Use with care.")                                   
                                    ),
-                                   textOutput("showbatchdownloadres")
+                                   h4("Shell File:"),
+                                   verbatimTextOutput("showbatchdownloadres")
                   )
             )            
       ))
