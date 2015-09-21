@@ -53,11 +53,17 @@ BatchDownload <- function(namelist, GSMdownloadpath=".") {
             GSMcontent <- readURL(paste0("http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=",singlename,"&targ=self&form=text&view=brief"))
             SRXlink <- paste0(strsplit(GSMcontent[grepl("SRX",GSMcontent) & grepl("supp",GSMcontent)]," = ")[[1]][2],"/")
             allSRX <- findSRX(SRXlink)
-            for (singleSRXid in 1:length(allSRX)) {
-                  tmppath <- paste0(GSMdownloadpath,"/",singlename,"_",singleSRXid,"/")
+            if (length(allSRX) == 1) {
+                  tmppath <- paste0(GSMdownloadpath,"/",singlename,"/")
                   shfile <- paste0(shfile,"mkdir ",tmppath,"\n")
-                  shfile <- paste0(shfile,"wget -O ",tmppath,"data.sra ",allSRX[singleSRXid],"\n")
-            }            
+                  shfile <- paste0(shfile,"wget -O ",tmppath,"data.sra ",allSRX,"\n") 
+            } else {
+                  for (singleSRXid in 1:length(allSRX)) {
+                        tmppath <- paste0(GSMdownloadpath,"/",singlename,"_",singleSRXid,"/")
+                        shfile <- paste0(shfile,"mkdir ",tmppath,"\n")
+                        shfile <- paste0(shfile,"wget -O ",tmppath,"data.sra ",allSRX[singleSRXid],"\n")
+                  }      
+            }                        
       }      
       shfile
 }
