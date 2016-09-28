@@ -2,3 +2,4 @@ name: GEOsearch
 account: zhiji
 bundleId: 259041
 url: https://zhiji.shinyapps.io/GEOsearch
+server: shinyapps.io

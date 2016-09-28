@@ -1,10 +1,11 @@
 %\VignetteIndexEntry{GEOsearch: Extendable Search Engine for Gene Expression Omnibus} 
 %\VignetteDepends{} 
-% \VignetteEngine{knitr::knitr}
-%\VignettePackage{SEPA}
+%\VignetteEngine{knitr::knitr}
+%\VignettePackage{GEOsearch}
 
 \documentclass[10pt,oneside]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{textcomp}
 \setlength\parindent{0pt}
 
 \newcommand{\thetitle}{GEOsearch: Extendable Search Engine for Gene Expression Omnibus}
