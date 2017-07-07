@@ -1,38 +1,43 @@
 Package: GEOsearch
 Type: Package
-Title: GEOsearch 
+Title: GEOsearch
 Version: 0.99.1
 Date: 2015-07-10
 Author: Zhicheng Ji, Hongkai Ji
 Maintainer: Zhicheng Ji <zji4@jhu.edu>
-Description: GEOsearch is an extendable search engine for NCBI GEO (Gene Expression Omnibus). Instead of directly searching the term, GEOsearch can find all the gene names contained in the search term and search all the alias of the gene names simultaneously in GEO database. GEOsearch also provides other functions such as summarizing common biology keywords in the search results. 
+Description: GEOsearch is an extendable search engine for NCBI GEO (Gene
+    Expression Omnibus). Instead of directly searching the term, GEOsearch can find
+    all the gene names contained in the search term and search all the alias of
+    the gene names simultaneously in GEO database. GEOsearch also provides other
+    functions such as summarizing common biology keywords in the search results.
 License: GPL(>=2)
 Imports:
-	RCurl,
+    RCurl,
     org.Hs.eg.db,
     org.Mm.eg.db
 VignetteBuilder: knitr
-Suggests:	
-	knitr,
-	shiny,
-	DT,
-	org.Ag.eg.db,
-	org.At.tair.db,
-	org.Bt.eg.db,
-	org.Ce.eg.db,
-	org.Cf.eg.db,
-	org.Dm.eg.db,
-	org.Dr.eg.db,
-	org.EcK12.eg.db,
-	org.EcSakai.eg.db,
-	org.Gg.eg.db,
-	org.Mmu.eg.db,
-	org.Pf.plasmo.db,
-	org.Pt.eg.db,
-	org.Rn.eg.db,
-	org.Sc.sgd.db,
-	org.Ss.eg.db,
-	org.Xl.eg.db
+Suggests:
+    knitr,
+    shiny,
+    DT,
+    org.Ag.eg.db,
+    org.At.tair.db,
+    org.Bt.eg.db,
+    org.Ce.eg.db,
+    org.Cf.eg.db,
+    org.Dm.eg.db,
+    org.Dr.eg.db,
+    org.EcK12.eg.db,
+    org.EcSakai.eg.db,
+    org.Gg.eg.db,
+    org.Mmu.eg.db,
+    org.Pf.plasmo.db,
+    org.Pt.eg.db,
+    org.Rn.eg.db,
+    org.Sc.sgd.db,
+    org.Ss.eg.db,
+    org.Xl.eg.db
 Depends:
     R(>= 3.2)
 biocViews: GUI,Software
+RoxygenNote: 6.0.1

@@ -23,7 +23,7 @@ KeyWordFreq <- function(searchtable, category = c("celltype","disease","tissue")
       })
       tmp <- sort(res[res > 0],decreasing = TRUE)            
       basefreq <- term[match(names(tmp),term[,1]),3]
-      seriescount <- readLines("http://www.ncbi.nlm.nih.gov/geo/")
+      seriescount <- readLines("https://www.ncbi.nlm.nih.gov/geo/")
       seriescount <- seriescount[grep("Series:",seriescount)]
       seriescount <- as.numeric(strsplit(seriescount,">|<")[[1]][5])
       logfoldchange <- log(tmp/nrow(searchtable)/(basefreq/seriescount))

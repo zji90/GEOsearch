@@ -13,18 +13,12 @@
 #' GEOSearchTerm("Oct4 RNA-seq")
 
 GEOSearchTerm <- function(termlist,type="GSE") {
-      readURL <- function(URL) {
-            while(!exists("URLdata")) {
-                  tryCatch(URLdata <- readLines(URL), error = function(e) {}, warning = function(w) {})
-            }      
-            URLdata
-      }
       uidlist <- sapply(termlist, function(oriterm) {
             searchterm <- gsub(" ","+",oriterm)            
             if (type=="GSE") {
-                  uid <- readURL(paste0("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term=GSE%5BETYP%5D+",searchterm,"&retmax=10000"))      
+                  uid <- readURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term=GSE%5BETYP%5D+",searchterm,"&retmax=10000"))      
             } else {
-                  uid <- readURL(paste0("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term=GSM%5BETYP%5D+",searchterm,"&retmax=10000"))     
+                  uid <- readURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term=GSM%5BETYP%5D+",searchterm,"&retmax=10000"))     
             }            
             uid <- uid[grep("</Id>",uid)]
             uid <- gsub("[^0-9]","",uid)
@@ -42,7 +36,7 @@ GEOSearchTerm <- function(termlist,type="GSE") {
                   } else {
                         tmpuniqueuid <- uniqueuid[1:500 + 500 * (i-1)]
                   }
-                  rawcontent <- c(rawcontent,readURL(paste0("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=gds&version=2.0&id=",paste0(tmpuniqueuid,collapse = ","))))
+                  rawcontent <- c(rawcontent,readURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=gds&version=2.0&id=",paste0(tmpuniqueuid,collapse = ","))))
                   
             }
             blankid <- which(rawcontent=="")

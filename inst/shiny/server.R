@@ -30,7 +30,7 @@ shinyServer(function(input, output,session) {
                               withProgress(message = 'Compiling GEO Search Results for GSE...',{
                                     Maindata$rawsearchres <- tmp <- GEOSearchTerm(tmpterm,type="GSE")
                               })
-                              tmp$Series <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Series,'" target=_blank>',tmp$Series,'</a>')
+                              tmp$Series <- paste0('<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Series,'" target=_blank>',tmp$Series,'</a>')
                               tmp$Term <- factor(tmp$Term)      
                               Maindata$searchres <- tmp                              
                               
@@ -38,10 +38,10 @@ shinyServer(function(input, output,session) {
                                     withProgress(message = 'Compiling GEO Search Results for GSM...',{
                                           Maindata$rawsearchresGSM <- tmp <- GEOSearchTerm(tmpterm,type="GSM")
                                     })
-                                    tmp$Sample <- paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Sample,'" target=_blank>',tmp$Sample,'</a>')                                    
+                                    tmp$Sample <- paste0('<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmp$Sample,'" target=_blank>',tmp$Sample,'</a>')                                    
                                     tmp$Series <- sapply(tmp$Series, function(i) {
                                           tmpSeries <- strsplit(i,",")[[1]]      
-                                          paste(paste0('<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmpSeries,'" target=_blank>',tmpSeries,'</a>'),collapse = ",")
+                                          paste(paste0('<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=',tmpSeries,'" target=_blank>',tmpSeries,'</a>'),collapse = ",")
                                     })      
                                     tmp$Term <- factor(tmp$Term)      
                                     Maindata$searchresGSM <- tmp                              

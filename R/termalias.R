@@ -14,15 +14,8 @@
 #' @examples
 #' TermAlias("Oct4 RNA-seq")
 
-
 TermAlias <- function(searchterm, allspecies = c("Human","Mouse"), mincount = 5) {
       data(database)
-      readURL <- function(URL, n = -1L) {
-            while(!exists("URLdata")) {
-                  tryCatch(URLdata <- readLines(URL,n), error = function(e) {}, warning = function(w) {})
-            }      
-	    URLdata
-      }      
       allterm <- strsplit(searchterm," ")[[1]]
       tmp <- sapply(allterm, function(term) {            
             term <- tolower(term)
@@ -33,8 +26,8 @@ TermAlias <- function(searchterm, allspecies = c("Human","Mouse"), mincount = 5)
                   eval(parse(text=paste0('db <- get("',base,'")')))                  
                   matchid <- which(term == tolower(keys(db,"ALIAS")))
                   if (length(matchid) > 0) {
-                        symbol <- select(db, keys=keys(db,"ALIAS")[matchid], columns="SYMBOL", keytype="ALIAS")[,2]
-                        allname <- c(allname,tolower(select(db, keys=symbol, columns="ALIAS", keytype="SYMBOL")[,2]))
+                        symbol <- suppressMessages(select(db, keys=keys(db,"ALIAS")[matchid], columns="SYMBOL", keytype="ALIAS")[,2])
+                        allname <- c(allname,tolower(suppressMessages(select(db, keys=symbol, columns="ALIAS", keytype="SYMBOL"))[,2]))
                   }     
             }
             
@@ -46,11 +39,11 @@ TermAlias <- function(searchterm, allspecies = c("Human","Mouse"), mincount = 5)
                         singlename <- allname[i]
                         dupname <- c(dupname,setdiff(grep(singlename,allname)[-i],i))
                   }
-                  
-                  allname <- allname[-dupname]
+                  if (length(dupname) > 0)
+                        allname <- allname[-dupname]
                   
                   termcount <- sapply (allname, function(singlename) {
-                        content <- readURL(paste0("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term=GSE%5BETYP%5D+",singlename,"&retmax=1"),n=3)
+                        content <- readURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term=GSE%5BETYP%5D+",singlename,"&retmax=1"),n=3)
                         content <- content[3]
                         as.numeric(strsplit(content,"(<Count>)|(</Count>)")[[1]][2])
                   })      

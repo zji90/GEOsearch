@@ -17,19 +17,6 @@
 #' BatchDownload("GSM1274542")
 
 BatchDownload <- function(namelist, GSMdownloadpath=".") {       
-      readURL <- function(URL) {
-            while(!exists("URLdata")) {
-                  tryCatch(URLdata <- readLines(URL), error = function(e) {}, warning = function(w) {})
-            }      
-            URLdata
-      }
-      mygetURL <- function(URL) {
-            while (!exists("URLdata")) {
-                  tryCatch(URLdata <- getURL(URL,dirlistonly = TRUE), error = function(e) {
-                  })
-            }
-            URLdata
-      }
       findSRX <- function(SRXlink) {
             pathlist <- NULL                        
             allSRRname <- strsplit(mygetURL(SRXlink),"\n")[[1]]            
@@ -50,7 +37,7 @@ BatchDownload <- function(namelist, GSMdownloadpath=".") {
       }
       shfile <- NULL
       for (singlename in allGSMname) {
-            GSMcontent <- readURL(paste0("http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=",singlename,"&targ=self&form=text&view=brief"))
+            GSMcontent <- readURL(paste0("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=",singlename,"&targ=self&form=text&view=brief"))
             SRXlink <- paste0(strsplit(GSMcontent[grepl("SRX",GSMcontent) & grepl("supp",GSMcontent)]," = ")[[1]][2],"/")
             allSRX <- findSRX(SRXlink)
             if (length(allSRX) == 1) {
