@@ -4,8 +4,8 @@
 %\VignettePackage{GEOsearch}
 
 \documentclass[10pt,oneside]{article}
-\usepackage[utf8]{inputenc}
-\usepackage{textcomp}
+\uGEOsearchckage[utf8]{inputenc}
+\uGEOsearchckage{textcomp}
 \setlength\parindent{0pt}
 
 \newcommand{\thetitle}{GEOsearch: Extendable Search Engine for Gene Expression Omnibus}
@@ -73,8 +73,8 @@ The function sampledetail returns an integrated table containing details of all 
 SampleDetail(c("GSE69322","GSE64008"))
 @
 
-\section{SEPA GUI}
-In addition to the basic command lines tools discussed above, SEPA provides a powerful which provides more comprehensive and convenient functions for gene expression pattern analysis. For example, users can easily transform raw gene expression data and convert gene identifiers before the analysis; save the result tables and plots of publication quality; identify genes with different expression patterns on true time and pseudo-time axis. Users are encouraged to use SEPA GUI.
+\section{GEOsearch GUI}
+In addition to the basic command lines tools discussed above, GEOsearch provides a powerful which provides more comprehensive and convenient functions for gene expression pattern analysis. For example, users can easily transform raw gene expression data and convert gene identifiers before the analysis; save the result tables and plots of publication quality; identify genes with different expression patterns on true time and pseudo-time axis. Users are encouraged to use GEOsearch GUI.
 
 
 \section{Reference}

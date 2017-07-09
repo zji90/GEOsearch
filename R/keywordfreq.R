@@ -30,6 +30,6 @@ KeyWordFreq <- function(searchtable, category = c("celltype","disease","tissue")
       pval <- p.adjust(sapply(1:length(tmp),function(i) {
             fisher.test(matrix(c(tmp[i],nrow(searchtable)-tmp[i],basefreq[i],seriescount-basefreq[i]),2),alternative = "greater")$p.value
       }),method="fdr")
-      res <- data.frame(term=names(tmp),frequency=tmp,logfoldchange=logfoldchange,FDR=pval,stringsAsFactors = FALSE)
+      res <- data.frame(Term=names(tmp),Frequency=tmp,Logfoldchange=logfoldchange,FDR=pval,stringsAsFactors = FALSE)
       res[order(res$FDR),]
 }

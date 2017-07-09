@@ -51,21 +51,25 @@ shinyServer(function(input, output,session) {
             }            
       })
       
+      DTfunc <- function(df,target) {
+            DT::datatable(df,escape = F,filter='top', extensions = c('Buttons','ColReorder','RowReorder'), options = list(dom = 'Bfrtip',columnDefs = list(list(visible=FALSE, targets=target)),buttons = c('copy', 'csv', 'excel', 'pdf', 'print','colvis'),colReorder = TRUE,rowReorder = TRUE))
+      }
+      
       output$searchshowtable <- DT::renderDataTable(
             if (!is.null(Maindata$searchres))
-                  DT::datatable(Maindata$searchres,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=4:8)),colVis = list(showAll = "Show all",restore = "Restore")))
+                  DTfunc(Maindata$searchres,5:8)
       )
       
       output$searchshowtableGSM <- DT::renderDataTable(
             if (!is.null(Maindata$searchresGSM))
-                  DT::datatable(Maindata$searchresGSM,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=6:7)),colVis = list(showAll = "Show all",restore = "Restore")))
+                  DTfunc(Maindata$searchresGSM,6:7)
       )
       
       output$searchshowtableui <- renderUI({
             if (input$searchGSMTF) {
                   tabsetPanel(
-                        tabPanel("GSE Series",DT::dataTableOutput("searchshowtable")),
-                        tabPanel("GSM Samples",DT::dataTableOutput("searchshowtableGSM"))
+                        tabPanel("GSE Series",br(),DT::dataTableOutput("searchshowtable")),
+                        tabPanel("GSM Samples",br(),DT::dataTableOutput("searchshowtableGSM"))
                   )     
             } else {
                   DT::dataTableOutput("searchshowtable")            
@@ -115,7 +119,7 @@ shinyServer(function(input, output,session) {
                   }                  
                   Maindata$searchreskeyword <- Maindata$searchres[tmp,]
                   Maindata$rawsearchreskeyword <- Maindata$rawsearchres[tmp,]
-                  DT::datatable(Maindata$searchreskeyword,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=4:8)),colVis = list(showAll = "Show all",restore = "Restore")))                  
+                  DTfunc(Maindata$searchreskeyword,4:8)
             }
       )      
       
@@ -174,7 +178,7 @@ shinyServer(function(input, output,session) {
       
       output$sampleshowtable <- DT::renderDataTable(
             if (!is.null(Maindata$sampleres))
-                  DT::datatable(Maindata$sampleres,escape = F,filter='top', extensions = 'ColVis', options = list(dom = 'C<"clear">lfrtip',columnDefs = list(list(visible=FALSE, targets=6:7)),colVis = list(showAll = "Show all",restore = "Restore")))
+                  DTfunc(Maindata$sampleres,6:7)
       )
       
       output$sampledownloadbutton <- downloadHandler(
