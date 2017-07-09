@@ -1,8 +1,8 @@
 Package: GEOsearch
 Type: Package
 Title: GEOsearch
-Version: 0.99.1
-Date: 2015-07-10
+Version: 1.0.0
+Date: 2017-07-09
 Author: Zhicheng Ji, Hongkai Ji
 Maintainer: Zhicheng Ji <zji4@jhu.edu>
 Description: GEOsearch is an extendable search engine for NCBI GEO (Gene
