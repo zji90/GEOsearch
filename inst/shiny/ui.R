@@ -10,7 +10,25 @@ shinyUI(
       navbarPage("",
                  tabPanel("GEOsearch",
                           
-                          p()  
+                          sidebarPanel(
+                                p(),
+                                width=2
+                          ),
+                          mainPanel(br(),
+                                    br(),
+                                    hr(),
+                                    h2("GEOsearch: Extendable Search Engine for Gene Expression Omnibus"),
+                                    h3("Overview"),
+                                    p("GEOsearch provides comprehensive search results by automatically searching all alias of the gene names in the search term. The search results are then integrated and displayed in a compact table. After an initial search, GEOsearch summarize the biological contexts of the search results and allows users to perform second-round search to further narrow down the search results. Other functions are also provided in GEOsearch.
+GEOsearch can be accessed by visiting the online user interface https://zhiji.shinyapps.io/GEOsearch. GEOsearch is also an R package that can be downloaded at https://github.com/zji90/GEOsearch.",style="font-size:20px"),
+                                    h3("Manual"),
+                                    p("The User Manual of GEOsearch provides the details about the various function menus in GEOsearch:",style="font-size:20px"),
+                                    tags$iframe(style="height:600px; width:100%", src="manual.pdf"),
+                                    h3("Contact"),
+                                    h5("Author: Zhicheng Ji, Hongkai Ji",style="font-size:20px"),
+                                    h5("Maintainer: Zhicheng Ji (zji4@jhu.edu)",style="font-size:20px"),
+                                    h5("Version: 1.0.0",style="font-size:20px")
+                                    )  
                           
                  ),
                  tabPanel("Perform Search",

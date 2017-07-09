@@ -23,9 +23,6 @@ KeyWordFreq <- function(searchtable, category = c("celltype","disease","tissue")
       })
       tmp <- sort(res[res > 0],decreasing = TRUE)            
       basefreq <- term[match(names(tmp),term[,1]),3]
-      seriescount <- readLines("https://www.ncbi.nlm.nih.gov/geo/")
-      seriescount <- seriescount[grep("Series:",seriescount)]
-      seriescount <- as.numeric(strsplit(seriescount,">|<")[[1]][5])
       logfoldchange <- log(tmp/nrow(searchtable)/(basefreq/seriescount))
       pval <- p.adjust(sapply(1:length(tmp),function(i) {
             fisher.test(matrix(c(tmp[i],nrow(searchtable)-tmp[i],basefreq[i],seriescount-basefreq[i]),2),alternative = "greater")$p.value

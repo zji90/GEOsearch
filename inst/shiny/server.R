@@ -51,8 +51,13 @@ shinyServer(function(input, output,session) {
             }            
       })
       
-      DTfunc <- function(df,target) {
-            DT::datatable(df,escape = F,filter='top', extensions = c('Buttons','ColReorder','RowReorder'), options = list(dom = 'Bfrtip',columnDefs = list(list(visible=FALSE, targets=target)),buttons = c('copy', 'csv', 'excel', 'pdf', 'print','colvis'),colReorder = TRUE,rowReorder = TRUE))
+      DTfunc <- function(df,target=NULL) {
+            row.names(df) <- NULL
+            if (is.null(target)) {
+                  DT::datatable(df,escape = F,filter='top', extensions = c('Buttons','ColReorder','RowReorder'), options = list(dom = 'Bfrtip',columnDefs = list(list(className="dt-left","targets"="_all")),buttons = c('copy', 'csv', 'excel', 'pdf', 'print','colvis'),colReorder = TRUE,rowReorder = TRUE))     
+            } else {
+                  DT::datatable(df,escape = F,filter='top', extensions = c('Buttons','ColReorder','RowReorder'), options = list(dom = 'Bfrtip',columnDefs = list(list(visible=FALSE, targets=target),list(className="dt-left","targets"="_all")),buttons = c('copy', 'csv', 'excel', 'pdf', 'print','colvis'),colReorder = TRUE,rowReorder = TRUE))      
+            }
       }
       
       output$searchshowtable <- DT::renderDataTable(
@@ -105,7 +110,7 @@ shinyServer(function(input, output,session) {
                   withProgress(message = 'Calculating key word frequencies...',{
                         Maindata$keywordres <- KeyWordFreq(Maindata$searchres,category = input$keywordselectterm)                  
                   })
-                  DT::datatable(Maindata$keywordres,filter='top')
+                  DTfunc(Maindata$keywordres)
             }
       )
       
@@ -126,7 +131,7 @@ shinyServer(function(input, output,session) {
       output$keyworddownloadbuttonkeyword <- downloadHandler(
             filename = function() { "Key Word Table.txt" },
             content = function(file) {                                    
-                  write.table(Maindata$keywordres,file=file,quote=F,row.names=F,sep="\t")                                          
+                  write.table(Maindata$keywordres,file=file,quote=F,row.names=F,sep="\t")
             }
       )
       
@@ -136,7 +141,7 @@ shinyServer(function(input, output,session) {
                   if (input$keyworddownloadselectedparttf) {
                         write.table(Maindata$rawsearchreskeyword[input$keywordshowselectsample_rows_selected,],file=file,quote=F,row.names=F,sep="\t")                        
                   } else {
-                        write.table(Maindata$rawsearchreskeyword,file=file,quote=F,row.names=F,sep="\t")                        
+                        write.table(Maindata$rawsearchreskeyword,file=file,quote=F,row.names=F,sep="\t")
                   }                  
             }
       )
