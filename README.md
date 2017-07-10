@@ -2,7 +2,7 @@ GEOsearch: Extendable Search Engine for Gene Expression Omnibus
 ====
 
 ## Overview
-GEOsearch is an extendable search engine for NCBI GEO (Gene Expression Omnibus). Instead of directly searching the term, GEOsearch can find all the gene names contained in the search term and search all the alias of the gene names simultaneously in GEO database. GEOsearch also provides other functions such as summarizing common biology keywords in the search results.
+GEOsearch is an extendable search engine for NCBI GEO (Gene Expression Omnibus). Instead of directly searching the term, GEOsearch can find all the gene names contained in the search term and search all the aliases of the gene names simultaneously in GEO database. GEOsearch also provides other functions such as keyword enrichment analysis.
 
 ## GEOsearch Online User Interface
 GEOsearch user interface can be directly launched online without installing any software package: https://zhiji.shinyapps.io/GEOsearch. Users can also install GEOsearch on their own computers with following procedures.
@@ -15,7 +15,7 @@ To install the latest version of GSCA package via Github, run following commands
 ```{r }
 if (!require("devtools"))
   install.packages("devtools")
-devtools::install_github("GEOsearch","zji90")
+devtools::install_github("zji90/GEOsearch")
 ```
 To launch user interface after installation, run following commands in R:
 ```{r }
@@ -31,4 +31,4 @@ Report bugs and provide suggestions by sending email to:
 
 Maintainer: Zhicheng Ji (zji4@jhu.edu)
 
-Or open a new issue in this Github page
+Or open a new issue in this Github page.

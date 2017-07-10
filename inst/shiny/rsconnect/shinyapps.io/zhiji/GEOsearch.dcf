@@ -1,5 +1,10 @@
 name: GEOsearch
+title:
 account: zhiji
-bundleId: 259041
-url: https://zhiji.shinyapps.io/GEOsearch
 server: shinyapps.io
+appId: 44596
+bundleId: 897516
+url: https://zhiji.shinyapps.io/GEOsearch/
+when: 1499646644.15269
+asMultiple: FALSE
+asStatic: FALSE
