@@ -10,8 +10,8 @@ GEOsearch user interface can be directly launched online without installing any 
 ## GEOsearch Installation
 
 GEOsearch software can be installed via Github. 
-Users should have R installed on their computer before installing GSCA. R can be downloaded here: http://www.r-project.org/.
-To install the latest version of GSCA package via Github, run following commands in R:
+Users should have R installed on their computer before installing GEOsearch. R can be downloaded here: http://www.r-project.org/.
+To install the latest version of GEOsearch package via Github, run following commands in R:
 ```{r }
 if (!require("devtools"))
   install.packages("devtools")
