@@ -20,7 +20,7 @@ devtools::install_github("zji90/GEOsearch")
 To launch user interface after installation, run following commands in R:
 ```{r }
 library(GEOsearch)
-GEOsearchui()
+GEOSearchUI()
 ```
 For users with R programming experience, command line tools are also available in GEOsearch R package. Please check the manual package included in the package for details.
 
